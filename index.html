@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Syllabification Practice</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* CSS Styles */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: #fff;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      backdrop-filter: blur(10px);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    .progress-bar {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      height: 10px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .progress {
+      background: #ff9f43;
+      height: 100%;
+      width: 0;
+      border-radius: 10px;
+      transition: width 0.5s ease;
+    }
+
+    .word-display {
+      font-size: 32px;
+      font-weight: 600;
+      margin: 20px 0;
+      color: #fff;
+      animation: fadeIn 1s ease;
+    }
+
+    .syllable-select {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      width: 100%;
+      margin-bottom: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      color: #333;
+    }
+
+    .submit-btn {
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      background: #ff9f43;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: #ff7f00;
+    }
+
+    .feedback {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: 600;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .final-score {
+      font-size: 24px;
+      font-weight: 600;
+      margin-top: 20px;
+      color: #ff9f43;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎉 Syllabification Practice 🎉</h1>
+    <div class="progress-bar">
+      <div class="progress"></div>
+    </div>
+    <p id="word-display" class="word-display"></p>
+    <select id="syllable-select" class="syllable-select">
+      <option value="1">1 Syllable</option>
+      <option value="2">2 Syllables</option>
+      <option value="3">3 Syllables</option>
+      <option value="4">4 Syllables</option>
+      <option value="5">5 Syllables</option>
+    </select>
+    <button id="submit-btn" class="submit-btn">Submit</button>
+    <p id="feedback" class="feedback"></p>
+    <p id="final-score" class="final-score"></p>
+  </div>
+
+  <script>
+    // JavaScript Code
+    const words = [
+      { word: "Consumerism", syllables: 5 },
+      { word: "Consumer", syllables: 3 },
+      { word: "Consumption", syllables: 3 },
+      { word: "Materialism", syllables: 5 },
+      { word: "Brand", syllables: 1 },
+      { word: "Loyalty", syllables: 3 },
+      { word: "Disposable", syllables: 4 },
+      { word: "Income", syllables: 2 },
+      { word: "Buying", syllables: 2 },
+      { word: "Culture", syllables: 2 },
+      { word: "Production", syllables: 3 },
+      { word: "Planned", syllables: 1 },
+      { word: "Rights", syllables: 1 },
+      { word: "Shopping", syllables: 2 },
+      { word: "Habits", syllables: 2 },
+      { word: "Demand", syllables: 2 },
+      { word: "Market", syllables: 2 },
+      { word: "Trends", syllables: 1 },
+      { word: "Behavior", syllables: 3 },
+      { word: "Goods", syllables: 1 },
+      { word: "Fast", syllables: 1 },
+      { word: "Fashion", syllables: 2 },
+      { word: "Sustainability", syllables: 6 },
+      { word: "Advertising", syllables: 4 },
+      { word: "Target", syllables: 2 },
+      { word: "Audience", syllables: 3 },
+      { word: "Campaign", syllables: 2 },
+      { word: "Endorsement", syllables: 3 },
+      { word: "Slogan", syllables: 2 },
+      { word: "Jingle", syllables: 2 },
+      { word: "Logo", syllables: 2 },
+      { word: "Commercial", syllables: 3 },
+      { word: "Billboard", syllables: 2 },
+      { word: "Social", syllables: 2 },
+      { word: "Influencer", syllables: 4 },
+      { word: "Viral", syllables: 2 },
+      { word: "Call", syllables: 1 },
+      { word: "Persuasion", syllables: 3 },
+      { word: "Messaging", syllables: 3 },
+      { word: "Contamination", syllables: 5 },
+      { word: "Expiration", syllables: 4 },
+      { word: "Date", syllables: 1 },
+      { word: "Illness", syllables: 2 },
+      { word: "Hygiene", syllables: 3 },
+      { word: "Preservatives", syllables: 4 },
+      { word: "Additives", syllables: 3 },
+      { word: "Pasteurization", syllables: 5 },
+      { word: "Allergens", syllables: 3 },
+      { word: "Inspection", syllables: 3 },
+      { word: "Labeling", syllables: 3 },
+      { word: "Organic", syllables: 3 },
+      { word: "Genetically", syllables: 5 },
+      { word: "Sanitation", syllables: 4 },
+      { word: "Toxins", syllables: 2 },
+      { word: "Recall", syllables: 2 },
+      { word: "Shelf", syllables: 1 },
+      { word: "Traceability", syllables: 6 },
+      { word: "Unharmful", syllables: 3 },
+      { word: "Safe", syllables: 1 },
+      { word: "Problem", syllables: 2 },
+      { word: "Entertainment", syllables: 4 },
+      { word: "Leisure", syllables: 2 },
+      { word: "Company", syllables: 3 },
+      { word: "Insecticide", syllables: 4 },
+      { word: "Obesity", syllables: 4 },
+      { word: "Healthy", syllables: 2 },
+      { word: "Change", syllables: 1 },
+      { word: "Future", syllables: 2 },
+      { word: "Obligation", syllables: 4 },
+      { word: "Dangerous", syllables: 3 },
+      { word: "Fatal", syllables: 2 },
+      { word: "Threaten", syllables: 2 },
+      { word: "Misleading", syllables: 3 },
+      { word: "Deceive", syllables: 2 },
+      { word: "Processed", syllables: 2 }
+    ];
+
+    let currentWordIndex = 0;
+    let correctAnswers = 0;
+    const totalWords = words.length;
+
+    const wordDisplay = document.getElementById("word-display");
+    const syllableSelect = document.getElementById("syllable-select");
+    const submitBtn = document.getElementById("submit-btn");
+    const feedback = document.getElementById("feedback");
+    const progressBar = document.querySelector(".progress");
+    const finalScore = document.getElementById("final-score");
+
+    function displayWord() {
+      wordDisplay.textContent = words[currentWordIndex].word;
+      syllableSelect.value = "1"; // Reset dropdown
+    }
+
+    function updateProgress() {
+      const progress = ((currentWordIndex + 1) / totalWords) * 100;
+      progressBar.style.width = `${progress}%`;
+    }
+
+    function checkAnswer() {
+      const selectedSyllables = parseInt(syllableSelect.value);
+      const correctSyllables = words[currentWordIndex].syllables;
+
+      if (selectedSyllables === correctSyllables) {
+        feedback.textContent = "Correct! 🎉";
+        feedback.style.color = "#4caf50";
+        correctAnswers++;
+      } else {
+        feedback.textContent = `Incorrect. The word has ${correctSyllables} syllable(s).`;
+        feedback.style.color = "#ff4444";
+      }
+
+      // Move to the next word
+      currentWordIndex++;
+      if (currentWordIndex < totalWords) {
+        setTimeout(() => {
+          displayWord();
+          feedback.textContent = "";
+          updateProgress();
+        }, 2000); // Wait 2 seconds before showing the next word
+      } else {
+        // Show final score
+        const percentage = Math.round((correctAnswers / totalWords) * 100);
+        let remark = "";
+        if (percentage >= 90) remark = "Excellent! 🌟";
+        else if (percentage >= 70) remark = "Good job! 👍";
+        else remark = "Keep practicing! 💪";
+        finalScore.textContent = `Your score: ${percentage}% - ${remark}`;
+        submitBtn.disabled = true; // Disable submit button
+      }
+    }
+
+    // Event listener for the submit button
+    submitBtn.addEventListener("click", checkAnswer);
+
+    // Display the first word when the page loads
+    displayWord();
+    updateProgress();
+  </script>
+</body>
+</html>
